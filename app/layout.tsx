@@ -6,15 +6,15 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: '이정규 ♥ 이유빈 결혼합니다',
-  description: '2026년 2월 28일 (토) 오후 3시 40분<div className=""></div>소중한 분들을 초대합니다',
+  description: '2026년 2월 28일 (토) 오후 3시 40분\n파티 웨딩유\n소중한 분들을 초대합니다',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   openGraph: {
     title: '이정규 ♥ 이유빈 결혼합니다',
-    description: '2026년 2월 28일 (토) 오후 3시 40분<div className=""></div>소중한 분들을 초대합니다',
+    description: '2026년 2월 28일 (토) 오후 3시 40분\n파티 웨딩유\n소중한 분들을 초대합니다',
     type: 'website',
     images: [
       {
-        url: '/img/f_6.jpeg', // OG 이미지 (절대 URL로 변경 필요)
+        url: '/img/f_6.jpeg',
         width: 600,
         height: 900,
         alt: '이정규 ♥ 이유빈 결혼합니다',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '이정규 ♥ 이유빈 결혼합니다',
-    description: '2026년 2월 28일 (토) 오후 3시 40분<div className=""></div>소중한 분들을 초대합니다',
+    description: '2026년 2월 28일 (토) 오후 3시 40분\n파티 웨딩유\n소중한 분들을 초대합니다',
     images: ['/img/f_6.jpeg'],
   },
 }
@@ -45,19 +45,20 @@ export default function RootLayout({
         
         {/* Open Graph 메타 태그 (카카오톡 공유용) */}
         <meta property="og:title" content="이정규 ♥ 이유빈 결혼합니다" />
-        <meta property="og:description" content="2026년 2월 28일 (토) 오후 3시 40분.소중한 분들을 초대합니다" />
+        <meta property="og:description" content="2026년 2월 28일 (토) 오후 3시 40분&#10;파티 웨딩유&#10;소중한 분들을 초대합니다" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={siteUrl} />
         <meta property="og:image" content={`${siteUrl}/img/f_6.jpeg`} />
-        <meta property="og:image:width" content="1920" />
-        <meta property="og:image:height" content="1080" />
+        <meta property="og:image:width" content="600" />
+        <meta property="og:image:height" content="900" />
         <meta property="og:image:alt" content="이정규 ♥ 이유빈 결혼합니다" />
-        <meta property="og:site_name" content="이정규 ♥ 이유빈 결혼합니다" />
+        <meta property="og:site_name" content="청첩장" />
+        <meta property="og:locale" content="ko_KR" />
         
         {/* Twitter Card (선택사항) */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="이정규 ♥ 이유빈 결혼합니다" />
-        <meta name="twitter:description" content="2026년 2월 28일 (토) 오후 3시 40분.소중한 분들을 초대합니다" />
+        <meta name="twitter:description" content="2026년 2월 28일 (토) 오후 3시 40분&#10;파티 웨딩유&#10;소중한 분들을 초대합니다" />
         <meta name="twitter:image" content={`${siteUrl}/img/f_6.jpeg`} />
         
         <link
