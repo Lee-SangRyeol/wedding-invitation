@@ -129,18 +129,8 @@ export default function KakaoShareButton({
       }
 
       // 카카오톡 링크 공유 데이터 구조
-      // 중요: 모든 URL은 절대 경로(https://)로 시작해야 함
-      // link 객체를 직접 생성하여 참조 문제 방지
-      const contentLink = {
-        mobileWebUrl: shareLink.mobileWebUrl,
-        webUrl: shareLink.webUrl,
-      }
-      
-      const buttonLink = {
-        mobileWebUrl: shareLink.mobileWebUrl,
-        webUrl: shareLink.webUrl,
-      }
-
+      // 공식 문서: https://developers.kakao.com/docs/latest/ko/message/js-link
+      // feed 타입은 content.link와 buttons.link가 필수
       const shareData = {
         objectType: 'feed' as const,
         content: {
@@ -148,16 +138,21 @@ export default function KakaoShareButton({
           description: description, // \n으로 줄바꿈
           imageUrl: ogImage,
           // 이미지 클릭 시 이동할 링크 (필수)
-          // mobileWebUrl: 모바일 웹에서 열릴 URL
-          // webUrl: PC 웹에서 열릴 URL
-          link: contentLink,
+          // 중요: mobileWebUrl과 webUrl 모두 필수
+          link: {
+            mobileWebUrl: siteUrl,
+            webUrl: siteUrl,
+          },
         },
         // 버튼 배열 (최대 2개)
-        // 각 버튼의 link는 content.link와 동일한 URL을 사용해야 함
+        // 중요: 각 버튼의 link는 content.link와 동일한 URL을 사용해야 함
         buttons: [
           {
             title: '청첩장 보러가기',
-            link: buttonLink,
+            link: {
+              mobileWebUrl: siteUrl,
+              webUrl: siteUrl,
+            },
           },
         ],
       }
@@ -168,9 +163,6 @@ export default function KakaoShareButton({
       console.log('설명:', description)
       console.log('이미지 URL:', ogImage)
       console.log('사이트 URL:', siteUrl)
-      console.log('공유 링크:', shareLink)
-      console.log('content.link:', contentLink)
-      console.log('button.link:', buttonLink)
       console.log('전체 데이터:', JSON.stringify(shareData, null, 2))
       console.log('Kakao 객체 확인:', {
         exists: !!window.Kakao,
@@ -180,46 +172,18 @@ export default function KakaoShareButton({
       })
       
       // 카카오톡 공유 API 호출
-      // Link.sendDefault 사용 (공식 권장 방법)
-      // 콜백 함수를 추가하여 성공/실패 확인
-      if (window.Kakao?.Link?.sendDefault) {
-        console.log('Link.sendDefault 사용')
-        try {
-          window.Kakao.Link.sendDefault({
-            objectType: 'feed',
-            content: {
-              title: title,
-              description: description,
-              imageUrl: ogImage,
-              link: {
-                mobileWebUrl: siteUrl,
-                webUrl: siteUrl,
-              },
-            },
-            buttons: [
-              {
-                title: '청첩장 보러가기',
-                link: {
-                  mobileWebUrl: siteUrl,
-                  webUrl: siteUrl,
-                },
-              },
-            ],
-            // 성공/실패 콜백 (선택사항)
-            success: function(response: any) {
-              console.log('카카오톡 공유 성공:', response)
-            },
-            fail: function(error: any) {
-              console.error('카카오톡 공유 실패:', error)
-            },
-          })
-        } catch (error) {
-          console.error('sendDefault 호출 중 에러:', error)
-          throw error
-        }
-      } else if (window.Kakao?.Share?.sendDefault) {
-        console.log('Share.sendDefault 사용 (대체)')
+      // 공식 문서: https://developers.kakao.com/docs/latest/ko/kakaotalk-share/js-link#send-scrap-msg
+      // JavaScript SDK 1.43.0 버전부터 Kakao.Share 모듈 사용
+      if (window.Kakao?.Share?.sendDefault) {
+        console.log('Share.sendDefault 사용 (공식 권장)')
+        console.log('전송할 데이터:', JSON.stringify(shareData, null, 2))
+        
+        // 공식 문서에 따른 sendDefault 호출
         window.Kakao.Share.sendDefault(shareData)
+      } else if (window.Kakao?.Link?.sendDefault) {
+        // 하위 호환성을 위한 Link.sendDefault (구버전)
+        console.log('Link.sendDefault 사용 (구버전 호환)')
+        window.Kakao.Link.sendDefault(shareData)
       } else {
         const errorMsg = '카카오톡 공유 API를 사용할 수 없습니다.'
         console.error(errorMsg)
