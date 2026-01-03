@@ -3,6 +3,7 @@
 import { use } from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
+import Link from 'next/link'
 import KakaoShareButton from '@/components/KakaoShareButton'
 
 const Container = styled.div`
@@ -58,6 +59,30 @@ const InfoText = styled.p`
   text-align: center;
   font-family: 'IropkeBatangM', serif;
   line-height: 1.6;
+`
+
+const ViewInvitationButton = styled(Link)`
+  padding: 0.75rem 1.5rem;
+  background-color: #89757a;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'IropkeBatangM', serif;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+
+  &:hover {
+    background-color: #6d5d61;
+  }
+
+  &:active {
+    background-color: #5a4a4e;
+  }
 `
 
 export default function SharePage() {

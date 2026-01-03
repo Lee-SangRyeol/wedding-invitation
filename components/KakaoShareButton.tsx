@@ -110,11 +110,12 @@ export default function KakaoShareButton({
     const ogImage = imageUrl || `${siteUrl}/img/f_6.jpeg`
 
     // 카카오톡 공유하기
+    // description에 줄바꿈 유지 (카카오톡은 \n을 줄바꿈으로 인식)
     window.Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
         title: title,
-        description: description.replace(/\n/g, ' '),
+        description: description, // 줄바꿈 유지
         imageUrl: ogImage,
         link: {
           mobileWebUrl: siteUrl,
@@ -130,6 +131,7 @@ export default function KakaoShareButton({
           },
         },
       ],
+      serverCallbackArgs: {},
     })
   }
 
