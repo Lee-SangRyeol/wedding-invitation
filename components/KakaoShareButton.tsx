@@ -42,34 +42,68 @@ export default function KakaoShareButton({
   imageUrl
 }: KakaoShareButtonProps) {
   useEffect(() => {
-    // 카카오 SDK 로드
-    if (!window.Kakao) {
+    // 카카오 SDK 로드 및 초기화
+    const initKakao = () => {
+      const KAKAO_JS_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY || ''
+      
+      if (!KAKAO_JS_KEY) {
+        console.warn('NEXT_PUBLIC_KAKAO_JS_KEY가 설정되지 않았습니다.')
+        return
+      }
+
+      if (window.Kakao) {
+        // 이미 SDK가 로드된 경우
+        if (!window.Kakao.isInitialized()) {
+          window.Kakao.init(KAKAO_JS_KEY)
+        }
+        return
+      }
+
+      // SDK 로드
       const script = document.createElement('script')
       script.src = 'https://developers.kakao.com/sdk/js/kakao.js'
       script.async = true
-      document.head.appendChild(script)
-
       script.onload = () => {
         if (window.Kakao && !window.Kakao.isInitialized()) {
-          // 카카오 SDK 초기화 (JavaScript 키 필요)
-          const KAKAO_JS_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY || ''
-          if (KAKAO_JS_KEY) {
-            window.Kakao.init(KAKAO_JS_KEY)
-          }
+          window.Kakao.init(KAKAO_JS_KEY)
         }
       }
+      script.onerror = () => {
+        console.error('카카오 SDK 로드 실패')
+      }
+      document.head.appendChild(script)
+    }
+
+    // 약간의 딜레이를 두고 초기화 (DOM 준비 대기)
+    const timer = setTimeout(initKakao, 100)
+
+    return () => {
+      clearTimeout(timer)
     }
   }, [])
 
   const handleShare = () => {
+    const KAKAO_JS_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY || ''
+    
+    if (!KAKAO_JS_KEY) {
+      alert('카카오톡 공유 기능을 사용하려면 환경 변수가 설정되어야 합니다.\n관리자에게 문의하세요.')
+      return
+    }
+
     if (!window.Kakao) {
-      alert('카카오 SDK가 로드되지 않았습니다.')
+      alert('카카오 SDK가 아직 로드 중입니다. 잠시 후 다시 시도해주세요.')
       return
     }
 
     if (!window.Kakao.isInitialized()) {
-      alert('카카오 SDK가 초기화되지 않았습니다.')
-      return
+      // 재시도: 초기화 시도
+      try {
+        window.Kakao.init(KAKAO_JS_KEY)
+      } catch (error) {
+        console.error('카카오 SDK 초기화 실패:', error)
+        alert('카카오톡 공유 기능을 사용할 수 없습니다. 잠시 후 다시 시도해주세요.')
+        return
+      }
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
