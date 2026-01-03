@@ -1,0 +1,85 @@
+@font-face {
+  font-family: 'IropkeBatangM';
+  src: url('/fonts/IropkeBatangM_web/IropkeBatangM.eot');
+  src: url('/fonts/IropkeBatangM_web/IropkeBatangM.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/IropkeBatangM_web/IropkeBatangM.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 모바일 브라우저 호환성을 위한 추가 설정 */
+@supports (-webkit-touch-callout: none) {
+  @font-face {
+    font-family: 'IropkeBatangM';
+    src: url('/fonts/IropkeBatangM_web/IropkeBatangM.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  -webkit-overflow-scrolling: touch;
+  /* 확대 방지 - manipulation은 더블탭 줌과 핀치 줌을 방지하지만 스크롤은 허용 */
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  font-family: 'IropkeBatangM', 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F0F0F1;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* 모바일에서 모든 요소에 확대 방지 적용 */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+  }
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 페이드인 애니메이션 - GPU 가속 사용 */
+.fade-in-element {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+  transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+}
+
+.fade-in-element.fade-in-visible {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto; /* 애니메이션 완료 후 will-change 제거 */
+}
+
+
