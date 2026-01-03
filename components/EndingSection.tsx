@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import styled from 'styled-components'
 import { useScrollFadeIn } from '@/hooks/useScrollFadeIn'
-import KakaoShareButton from './KakaoShareButton'
 
 interface EndingSectionProps {
   sectionRef?: React.RefObject<HTMLElement>
@@ -11,13 +10,9 @@ interface EndingSectionProps {
 
 const Section = styled.section`
   width: 100%;
-  padding: 0 0 2rem 0;
+  padding: 0;
   background-color: #F0F0F1;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
 `
 
 const ImageContainer = styled.div`
