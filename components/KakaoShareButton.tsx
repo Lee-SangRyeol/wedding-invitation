@@ -110,29 +110,42 @@ export default function KakaoShareButton({
     const ogImage = imageUrl || `${siteUrl}/img/f_6.jpeg`
 
     // 카카오톡 공유하기
-    // description에 줄바꿈 유지 (카카오톡은 \n을 줄바꿈으로 인식)
-    window.Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: title,
-        description: description, // 줄바꿈 유지
-        imageUrl: ogImage,
-        link: {
-          mobileWebUrl: siteUrl,
-          webUrl: siteUrl,
-        },
-      },
-      buttons: [
-        {
-          title: '청첩장 보러가기',
+    // description에 줄바꿈을 유지하기 위해 \n 사용
+    // buttons는 최대 2개까지 가능하며, 반드시 content.link와 동일한 URL이어야 함
+    try {
+      const shareData = {
+        objectType: 'feed' as const,
+        content: {
+          title: title,
+          description: description, // \n으로 줄바꿈
+          imageUrl: ogImage,
           link: {
             mobileWebUrl: siteUrl,
             webUrl: siteUrl,
           },
         },
-      ],
-      serverCallbackArgs: {},
-    })
+        buttons: [
+          {
+            title: '청첩장 보러가기',
+            link: {
+              mobileWebUrl: siteUrl,
+              webUrl: siteUrl,
+            },
+          },
+        ],
+      }
+
+      console.log('카카오톡 공유 데이터:', JSON.stringify(shareData, null, 2))
+      console.log('description 원본:', description)
+      console.log('description 길이:', description.length)
+      console.log('줄바꿈 포함 여부:', description.includes('\n'))
+      
+      // 카카오톡 공유 API 호출
+      window.Kakao.Share.sendDefault(shareData)
+    } catch (error) {
+      console.error('카카오톡 공유 실패:', error)
+      alert('카카오톡 공유 중 오류가 발생했습니다.')
+    }
   }
 
   return (
