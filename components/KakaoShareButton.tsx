@@ -38,7 +38,7 @@ interface KakaoShareButtonProps {
 
 export default function KakaoShareButton({ 
   title = '이정규 ♥ 이유빈 결혼합니다',
-  description = '2026년 2월 28일 (토) 오후 3시 40분\n파티 웨딩유\n소중한 분들을 초대합니다',
+  description = '2026년 2월 28일 (토) 오후 3시 40분\n파티 웨딩유',
   imageUrl
 }: KakaoShareButtonProps) {
   useEffect(() => {
@@ -110,6 +110,7 @@ export default function KakaoShareButton({
     const ogImage = imageUrl || `${siteUrl}/img/f_6.jpeg`
 
     // 카카오톡 공유하기
+    // Link.sendDefault 사용 (Share.sendDefault보다 호환성 좋음)
     // description에 줄바꿈을 유지하기 위해 \n 사용
     // buttons는 최대 2개까지 가능하며, 반드시 content.link와 동일한 URL이어야 함
     try {
@@ -135,16 +136,28 @@ export default function KakaoShareButton({
         ],
       }
 
-      console.log('카카오톡 공유 데이터:', JSON.stringify(shareData, null, 2))
-      console.log('description 원본:', description)
-      console.log('description 길이:', description.length)
-      console.log('줄바꿈 포함 여부:', description.includes('\n'))
+      // 콘솔 확인용 (F12 → Console 탭에서 확인)
+      console.log('=== 카카오톡 공유 데이터 ===')
+      console.log('제목:', title)
+      console.log('설명:', description)
+      console.log('이미지 URL:', ogImage)
+      console.log('사이트 URL:', siteUrl)
+      console.log('전체 데이터:', JSON.stringify(shareData, null, 2))
       
       // 카카오톡 공유 API 호출
-      window.Kakao.Share.sendDefault(shareData)
+      // Link.sendDefault 사용 (Share.sendDefault보다 호환성 좋음)
+      if (window.Kakao.Link && window.Kakao.Link.sendDefault) {
+        window.Kakao.Link.sendDefault(shareData)
+      } else if (window.Kakao.Share && window.Kakao.Share.sendDefault) {
+        window.Kakao.Share.sendDefault(shareData)
+      } else {
+        console.error('카카오톡 공유 API를 사용할 수 없습니다.')
+        console.error('Kakao 객체:', window.Kakao)
+        alert('카카오톡 공유 기능을 사용할 수 없습니다. 콘솔을 확인해주세요.')
+      }
     } catch (error) {
       console.error('카카오톡 공유 실패:', error)
-      alert('카카오톡 공유 중 오류가 발생했습니다.')
+      alert('카카오톡 공유 중 오류가 발생했습니다: ' + (error as Error).message)
     }
   }
 
