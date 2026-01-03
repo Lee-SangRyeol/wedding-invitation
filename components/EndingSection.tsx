@@ -4,6 +4,10 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import { useScrollFadeIn } from '@/hooks/useScrollFadeIn'
 
+interface EndingSectionProps {
+  sectionRef?: React.RefObject<HTMLElement>
+}
+
 const Section = styled.section`
   width: 100%;
   padding: 0;
