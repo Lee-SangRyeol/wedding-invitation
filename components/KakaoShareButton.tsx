@@ -112,33 +112,49 @@ export default function KakaoShareButton({
     // 카카오톡 공유하기 - 공식 문서 기준 정확한 구조
     // 중요: content.link는 이미지 클릭 시 이동할 링크 (필수)
     // buttons.link는 버튼 클릭 시 이동할 링크 (content.link와 동일해야 함)
+    // 모든 URL은 절대 경로(https://)로 시작해야 함
     try {
       // 공유할 링크 URL (모든 링크가 동일해야 함)
+      // URL이 올바른 형식인지 확인
       const shareLink = {
         mobileWebUrl: siteUrl,
         webUrl: siteUrl,
       }
 
+      // URL 유효성 검사
+      if (!shareLink.mobileWebUrl.startsWith('http://') && !shareLink.mobileWebUrl.startsWith('https://')) {
+        console.error('URL은 http:// 또는 https://로 시작해야 합니다:', shareLink.mobileWebUrl)
+        alert('URL 형식이 올바르지 않습니다.')
+        return
+      }
+
+      // 카카오톡 링크 공유 데이터 구조
+      // 중요: 모든 URL은 절대 경로(https://)로 시작해야 함
       const shareData = {
         objectType: 'feed' as const,
         content: {
           title: title,
           description: description, // \n으로 줄바꿈
           imageUrl: ogImage,
-          link: shareLink, // 이미지 클릭 시 이동할 링크 (필수)
+          // 이미지 클릭 시 이동할 링크 (필수)
+          // mobileWebUrl: 모바일 웹에서 열릴 URL
+          // webUrl: PC 웹에서 열릴 URL
+          link: {
+            mobileWebUrl: shareLink.mobileWebUrl,
+            webUrl: shareLink.webUrl,
+          },
         },
+        // 버튼 배열 (최대 2개)
+        // 각 버튼의 link는 content.link와 동일한 URL을 사용해야 함
         buttons: [
           {
             title: '청첩장 보러가기',
-            link: shareLink, // 버튼 클릭 시 이동할 링크 (content.link와 동일)
+            link: {
+              mobileWebUrl: shareLink.mobileWebUrl,
+              webUrl: shareLink.webUrl,
+            },
           },
         ],
-        // social 필드는 선택사항 (공유 수 표시)
-        // social: {
-        //   likeCount: 0,
-        //   commentCount: 0,
-        //   sharedCount: 0,
-        // },
       }
 
       // 디버깅 로그
