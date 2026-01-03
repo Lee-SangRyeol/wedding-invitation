@@ -106,59 +106,76 @@ export default function KakaoShareButton({
       }
     }
 
-    // const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
-    const siteUrl = 'https://wedding-invitation.asia'
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://wedding-invitation.asia'
     const ogImage = imageUrl || `${siteUrl}/img/f_6.jpeg`
 
-    // 카카오톡 공유하기
-    // Link.sendDefault 사용 (Share.sendDefault보다 호환성 좋음)
-    // description에 줄바꿈을 유지하기 위해 \n 사용
-    // buttons는 최대 2개까지 가능하며, 반드시 content.link와 동일한 URL이어야 함
+    // 카카오톡 공유하기 - 공식 문서 기준 정확한 구조
+    // 중요: content.link는 이미지 클릭 시 이동할 링크 (필수)
+    // buttons.link는 버튼 클릭 시 이동할 링크 (content.link와 동일해야 함)
     try {
+      // 공유할 링크 URL (모든 링크가 동일해야 함)
+      const shareLink = {
+        mobileWebUrl: siteUrl,
+        webUrl: siteUrl,
+      }
+
       const shareData = {
         objectType: 'feed' as const,
         content: {
           title: title,
           description: description, // \n으로 줄바꿈
           imageUrl: ogImage,
-          link: {
-            mobileWebUrl: siteUrl,
-            webUrl: siteUrl,
-          },
+          link: shareLink, // 이미지 클릭 시 이동할 링크 (필수)
         },
         buttons: [
           {
             title: '청첩장 보러가기',
-            link: {
-              mobileWebUrl: siteUrl,
-              webUrl: siteUrl,
-            },
+            link: shareLink, // 버튼 클릭 시 이동할 링크 (content.link와 동일)
           },
         ],
+        // social 필드는 선택사항 (공유 수 표시)
+        // social: {
+        //   likeCount: 0,
+        //   commentCount: 0,
+        //   sharedCount: 0,
+        // },
       }
 
-      // 콘솔 확인용 (F12 → Console 탭에서 확인)
+      // 디버깅 로그
       console.log('=== 카카오톡 공유 데이터 ===')
       console.log('제목:', title)
       console.log('설명:', description)
       console.log('이미지 URL:', ogImage)
       console.log('사이트 URL:', siteUrl)
+      console.log('공유 링크:', shareLink)
       console.log('전체 데이터:', JSON.stringify(shareData, null, 2))
+      console.log('Kakao 객체 확인:', {
+        exists: !!window.Kakao,
+        initialized: window.Kakao?.isInitialized(),
+        hasLink: !!(window.Kakao?.Link),
+        hasShare: !!(window.Kakao?.Share),
+      })
       
       // 카카오톡 공유 API 호출
-      // Link.sendDefault 사용 (Share.sendDefault보다 호환성 좋음)
-      if (window.Kakao.Link && window.Kakao.Link.sendDefault) {
+      // Link.sendDefault 사용 (공식 권장 방법)
+      if (window.Kakao?.Link?.sendDefault) {
+        console.log('Link.sendDefault 사용')
         window.Kakao.Link.sendDefault(shareData)
-      } else if (window.Kakao.Share && window.Kakao.Share.sendDefault) {
+      } else if (window.Kakao?.Share?.sendDefault) {
+        console.log('Share.sendDefault 사용 (대체)')
         window.Kakao.Share.sendDefault(shareData)
       } else {
-        console.error('카카오톡 공유 API를 사용할 수 없습니다.')
+        const errorMsg = '카카오톡 공유 API를 사용할 수 없습니다.'
+        console.error(errorMsg)
         console.error('Kakao 객체:', window.Kakao)
-        alert('카카오톡 공유 기능을 사용할 수 없습니다. 콘솔을 확인해주세요.')
+        console.error('사용 가능한 메서드:', Object.keys(window.Kakao || {}))
+        alert(errorMsg + '\n콘솔을 확인해주세요. (F12)')
       }
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error)
       console.error('카카오톡 공유 실패:', error)
-      alert('카카오톡 공유 중 오류가 발생했습니다: ' + (error as Error).message)
+      console.error('에러 상세:', error)
+      alert('카카오톡 공유 중 오류가 발생했습니다.\n에러: ' + errorMessage)
     }
   }
 
