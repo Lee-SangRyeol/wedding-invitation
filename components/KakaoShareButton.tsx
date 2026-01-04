@@ -107,7 +107,7 @@ export default function KakaoShareButton({
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://wedding-invitation.asia'
-    const ogImage = imageUrl || `${siteUrl}/img/f_6.jpeg`
+    const ogImage = imageUrl || `${siteUrl}/img/bb.jpeg`
 
     // 카카오톡 공유하기 - 공식 문서 기준 정확한 구조
     // 중요: content.link는 이미지 클릭 시 이동할 링크 (필수)
