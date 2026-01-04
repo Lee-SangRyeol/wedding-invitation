@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/img/f_6.jpeg',
+        url: '/img/bb.jpeg',
         width: 600,
         height: 900,
         alt: '이정규 ♥ 이유빈 결혼합니다',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '이정규 ♥ 이유빈 결혼합니다',
     description: '2026년 2월 28일 (토) 오후 3시 40분\n파티 웨딩유\n소중한 분들을 초대합니다',
-    images: ['/img/f_6.jpeg'],
+    images: ['/img/bb.jpeg'],
   },
 }
 
@@ -48,7 +48,7 @@ export default function RootLayout({
         <meta property="og:description" content="2026년 2월 28일 (토) 오후 3시 40분&#10;파티 웨딩유&#10;소중한 분들을 초대합니다" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={siteUrl} />
-        <meta property="og:image" content={`${siteUrl}/img/f_6.jpeg`} />
+        <meta property="og:image" content={`${siteUrl}/img/bb.jpeg`} />
         <meta property="og:image:width" content="600" />
         <meta property="og:image:height" content="900" />
         <meta property="og:image:alt" content="이정규 ♥ 이유빈 결혼합니다" />
@@ -59,7 +59,7 @@ export default function RootLayout({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="이정규 ♥ 이유빈 결혼합니다" />
         <meta name="twitter:description" content="2026년 2월 28일 (토) 오후 3시 40분&#10;파티 웨딩유&#10;소중한 분들을 초대합니다" />
-        <meta name="twitter:image" content={`${siteUrl}/img/f_6.jpeg`} />
+        <meta name="twitter:image" content={`${siteUrl}/img/bb.jpeg`} />
         
         <link
           rel="preload"

@@ -100,7 +100,7 @@ export default function SharePage() {
         
         <ImageWrapper>
           <Image
-            src="/img/f_6.jpeg"
+            src="/img/bb.jpeg"
             alt="이정규 ♥ 이유빈 결혼사진"
             width={600}
             height={900}
@@ -117,7 +117,7 @@ export default function SharePage() {
         </InfoText>
 
         <KakaoShareButton 
-          imageUrl={`${siteUrl}/img/f_6.jpeg`}
+          imageUrl={`${siteUrl}/img/bb.jpeg`}
         />
       </Card>
     </Container>
